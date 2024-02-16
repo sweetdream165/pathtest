@@ -8,7 +8,7 @@
 const curPath = window.location.pathname
 const curPage = window.location.pathname.slice(1)
 
-fetch(`/pathtest/route/${curPage}.html`)
+fetch(`/pathtest/route/${curPage}`)
     .then( response => {return response.text()})
     .then( data => {
         document.body.innerHTML = data
