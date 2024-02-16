@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="input-test">
+        <input class="updating-text" type="text">
+        <input class="updating-text" type="text">
+        <input class="updating-text" type="text">
+        <input class="updating-text" type="text">
+        <input class="updating-text" type="text">
+        <input class="updating-text" type="text">
+        <input class="updating-text" type="text">
+        <input class="updating-text" type="text">       
+    </div>
+
+    <script>  
+        //POINTERs TO DEFAULT QUERYs  
+        let querys =  Document.prototype.querySelector 
+        let querysAll =  Document.prototype.querySelectorAll
+        //WINDOW EVENT LISTENER
+        addEventListener("input", (e) => {e.target.controller.value.reSet(e.target.value)})
+        //PROPERTY CREATOR
+        let prop = new Proxy({} , {
+            set(target, prop, value){   
+                Object.defineProperty(self, prop, { 
+                    get: () => {  
+                        return self['$' + prop].content
+                    },
+                    set: (value) => {   
+                        if(!self['$' + prop]) self['$' + prop] = {content: '', track: {target: []}}
+                        self['$' + prop].reSet = (value) => {
+                            if(self['$' + prop].track.target.length){
+                                self['$' + prop].track.target.forEach((target)=>{
+                                    target.node[target.property] = value
+                                })
+                            } 
+                            self['$' + prop].content = value 
+                        }
+                        
+                        self['$' + prop].reSet(value)
+                    }
+                });
+                self[prop] = value
+            }
+        })
+        //OVERRIDEs FOR QUERY SELECTORs [HIDEN]
+        Document.prototype.querySelector = function(value) {
+            let name = value.replace(/[#.-]/g, '')
+            let element = querys.call(this, value)
+
+            window[name] = new Proxy(element, {
+                set(target, prop, value){
+                    if(typeof(value) === 'object'){
+                        if (!target.controller) target.controller = {}
+                        target.controller[prop] = value
+                        target[prop] = value.content
+                        value.track.target.push({node: target, property: prop})
+                    }else{
+                        if(target.controller) target.controller.reSet(value)
+                        target[prop] = value
+                    }
+                },
+                get(target, prop){
+                    return target[prop]
+                }
+            })
+
+            return window[name]
+        }
+        Document.prototype.querySelectorAll = function(value) {
+            let name = value.replace(/[#.-]/g, '')
+            let element = querysAll.call(this, value)
+            window[name] = []
+
+            element.forEach(el => {
+                window[name].push(new Proxy(el, {
+                    set(target, prop, value){
+                        if(typeof(value) === 'object'){
+                            if (!target.controller) target.controller = {}
+                            target.controller[prop] = value
+                            target[prop] = value.content
+                            value.track.target.push({node: target, property: prop})
+                        }else{
+                            if(target.controller) target.controller.reSet(value)
+                            target[prop] = value
+                        }
+                    },
+                    get(target, prop){
+                        return target[prop]
+                    }
+                }))
+            })
+
+
+            return window[name]
+        }
+
+
+        //ACTUAL PROGRAM CODE
+        document.querySelectorAll('.updating-text')
+        prop.myText = 'background-color: violet; font-size: 15px'
+
+        updatingtext.forEach(el => {
+            el.value = $myText
+            el.style = $myText
+        })
+
+
+
+        //----------NOTES-----------
+        // TODO:
+        //      - Make setter and getter wraper for element PROXYs (get rid of repetitions) 
+        //      - Local scoped propertys (possible?)
+        //      - Binding for styles
+        //      - Move everything to MODULE
+    </script>
+</body>
+</html>
