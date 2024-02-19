@@ -36,7 +36,7 @@ const fetchPage = (page) => {
     onPageChanged.detail.page = page
 
     if (page === '/' || !page) page = contentElement.getAttribute('startWith')
-    fetch(`${window.location.origin}/pathtest/route/${page}.html`)
+    fetch(`${window.location.origin}/pathtest/route/${page}`)
     .then( response => {return response.text()})
     .then( data => {
             console.log(data, page);
