@@ -39,7 +39,7 @@ const fetchPage = (page) => {
     fetch(`${window.location.origin}/pathtest/route/${page}.html`)
     .then( response => {return response.text()})
     .then( data => {
-            console.log('delay');
+            console.log(page, page);
             
             document.title = page.slice(1)
             if(data.startsWith('<!DOCTYPE html>')){
