@@ -1,0 +1,107 @@
+/* ### GENERAL ### */
+html,body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    flex-flow: row;
+    height: 100vh;
+}
+
+/* ### NAV BAR ### */
+nav{
+    background-color: #212529;
+
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.activePage{
+    background-color: antiquewhite;
+    color: gray;
+}
+
+.non-linked:hover{
+    background-color: transparent;
+    opacity: 0.9;
+    color: #e9ecef;
+}
+
+nav a{
+    display: block;
+    
+    transition: all ease 0.2s;
+    background-color: #343a40;
+    color: #e9ecef;
+    text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 0 5px;
+}
+
+.non-exist{
+    color: #ef476f;
+}
+
+nav ul{
+    list-style: none;
+    padding: 0;
+    
+}
+
+nav li{
+    min-width: 200px;
+    margin: 5px 50px;
+}
+
+nav li li{
+    background-color: #343a40;
+    margin: 5px 0;
+    margin-left: 30px;
+}
+
+nav a:hover{
+    background-color: antiquewhite;
+    color: gray;
+}
+
+/* ### CONTENT ### */
+content{
+    background-color: #e9ecef;
+
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+content object{
+    width: 40px;
+    height: 40px;
+
+    animation-name: loadingRotate;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+}
+
+content .state{
+    opacity: 1;
+    transition: all 1s;
+}
+
+/* ### ANIMATIONS ### */
+@keyframes loadingRotate {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}

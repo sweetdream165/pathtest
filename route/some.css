@@ -1,0 +1,42 @@
+h1{
+    text-transform: uppercase;
+}
+
+/* ### ABOUT PAGE ### */
+.about{
+    width: 55%;
+}
+
+.about p{
+    font-style: italic;
+    padding: 20px;
+    background-color: #ced4da;
+    border-radius: 5px;
+}
+
+.about h5{
+    text-align: right;
+}
+
+/* ### MOM PAGE ### */
+
+.mom{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 50%;
+}
+
+.mom .btn{
+    text-decoration: none;
+    background-color: #ced4da;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    color: black;
+    border-radius: 5px;
+}
+
+.mom .btn:hover{
+    background-color: lightgray;
+}

@@ -4,9 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>This is 404 page.</h1>
-    <script type="module" src="/pathtest/404Routing.js"></script>
+    <nav>
+        <ul>
+            <li><a is="route-to" href="/">home</a></li>
+            <li><a is="route-to" href="/about">about</a></li>
+            <li>
+                <a class="non-linked">goods</a>
+                <ul>
+                    <li><a is="route-to" href="/goods/mom">ur mom</a></li>
+                    <li><a is="route-to" href="/goods/school">school supplies</a></li>
+                </ul>
+            </li>
+            <li>
+                <a is="route-to" href="/tag">tag</a>
+                <ul>
+                    <li><a is="route-to" href="/tag/game">game</a></li>
+                    <li><a is="route-to" href="/tag/movie">movie</a></li>
+                    <li><a is="route-to" href="/tag/art">art</a></li>
+                </ul>
+            </li>
+            
+            <li><a is="route-to" class="non-exist" href="/non-existent-page">non-existent page</a></li>
+        </ul>
+        <a href="/git">git</a>
+    </nav>
+    <content startWith="/home">
+        <h1 class="state">loading</h1>
+        <object data="/img/loading.svg" type="image/svg+xml"></object>
+    </content>
+
+    <!-- <script type="module" src="/404Routing.js"></script> -->
+    <script type="module">
+        import '/modules/404Routing.js'
+
+        document.addEventListener('pageFetchingError', e => {
+            const el = document.querySelector('.state')
+            el.textContent = `404! ${window.location.pathname}`
+        })
+        document.addEventListener('onPageChanged', e => {
+            const lastPage = document.querySelector('.activePage')
+            if(lastPage) lastPage.classList.remove('activePage')
+            document.querySelector(`[href='${e.detail.page}']`).classList.add('activePage')
+        })
+    </script>
 </body>
 </html>
