@@ -23,7 +23,7 @@ class RouteElement extends HTMLAnchorElement {
             const page = this.getAttribute('href')
             
             if (page === window.location.pathname) return
-            history.pushState(page, null, '/pathtest' + page)
+            history.pushState('/pathtest' + page, null, '/pathtest' + page)
             document.querySelector('content').replaceWith(contentBaseNode.cloneNode(true))
             fetchPage(curGitPage)
         }   
