@@ -25,7 +25,7 @@ class RouteElement extends HTMLAnchorElement {
             if (page === window.location.pathname) return
             history.pushState(page, null, page)
             document.querySelector('content').replaceWith(contentBaseNode.cloneNode(true))
-            fetchPage(page)
+            fetchPage(curGitPage)
         }   
     }
 }
@@ -36,7 +36,7 @@ const fetchPage = (page) => {
     onPageChanged.detail.page = page
 
     if (page === '/' || !page) page = contentElement.getAttribute('startWith')
-    fetch(`${window.location.origin}/route/${page}.html`)
+    fetch(`${window.location.origin}/pathtest/route/${page}.html`)
     .then( response => {return response.text()})
     .then( data => {
             console.log('delay');
@@ -53,4 +53,4 @@ const fetchPage = (page) => {
         })
 }
 
-fetchPage(curPage)
+fetchPage(curGitPage)
