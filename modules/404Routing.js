@@ -39,8 +39,6 @@ const fetchPage = (page) => {
     fetch(`${window.location.origin}/pathtest/route/${page}`)
     .then( response => {return response.text()})
     .then( data => {
-            console.log(data, page, 'gellww');
-            
             document.title = page.slice(1)
             if(data.startsWith('<!DOCTYPE html>')){
                 // const parser = new DOMParser()
