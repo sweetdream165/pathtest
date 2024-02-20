@@ -25,7 +25,7 @@ class RouteElement extends HTMLAnchorElement {
             if (page === window.location.pathname) return
             history.pushState('/pathtest' + page, null, '/pathtest' + page)
             document.querySelector('content').replaceWith(contentBaseNode.cloneNode(true))
-            fetchPage(curGitPage)
+            fetchPage(page)
         }   
     }
 }
