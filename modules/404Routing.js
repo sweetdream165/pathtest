@@ -5,9 +5,17 @@
 // '<script type="module" src="/yourRepo/404Routing.js"></script>'.
 // Same for routing fetch.
 
-const curPage = window.location.pathname
-const curGitPage = window.location.pathname.replace('pathtest', '').slice(1)
+// CONTENT TAG HAS 3 ATTRIBUTES
+// - startWith="/home"  [page that website starts from]
+// - prefix="/customPath"   [in case site origin starts from path ex: yourSite.com/customPath]
+// - fileExt=".html">   [some servers requires file endings for fetch ex: local server requires '.html']
+
+// PROPS
+const sitePrefix = document.querySelector('content').getAttribute('prefix') || ''
+const curPage = window.location.pathname.replace(sitePrefix, '')
 const contentBaseNode = document.querySelector('content').cloneNode(true)
+
+//EVENTS
 const pageFetchingError = new Event('pageFetchingError') 
 const onPageChanged = new CustomEvent('onPageChanged', {"detail": {'page': null}})
 window.addEventListener('popstate', e => {
@@ -15,6 +23,7 @@ window.addEventListener('popstate', e => {
     fetchPage(e.state)
 })
 
+//ROUTING LINKS
 class RouteElement extends HTMLAnchorElement {
     constructor(){
         super();
@@ -23,7 +32,7 @@ class RouteElement extends HTMLAnchorElement {
             const page = this.getAttribute('href')
             
             if (page === window.location.pathname) return
-            history.pushState(page, null, page)
+            history.pushState(page, null, sitePrefix + page)
             document.querySelector('content').replaceWith(contentBaseNode.cloneNode(true))
             fetchPage(page)
         }   
@@ -31,26 +40,62 @@ class RouteElement extends HTMLAnchorElement {
 }
 customElements.define('route-to', RouteElement, {extends: 'a'})
 
+//FETCHING
 const fetchPage = (page) => {
     const contentElement = document.querySelector('content')
+    
+    if (!page) page = '/'
     onPageChanged.detail.page = page
+    if (page === '/') page = contentElement.getAttribute('startWith')
 
-    if (page === '/' || !page) page = contentElement.getAttribute('startWith')
-    fetch(`${window.location.origin}/route/${page}.html`)
+    fetch(`${window.location.origin}${sitePrefix}/route/${page}${contentElement.getAttribute('fileExt')}`)
     .then( response => {return response.text()})
     .then( data => {
-            console.log('delay');
             
             document.title = page.slice(1)
             if(data.startsWith('<!DOCTYPE html>')){
-                // const parser = new DOMParser()
                 contentElement.replaceWith(contentBaseNode.cloneNode(true))
                 document.dispatchEvent(pageFetchingError)
             }else{
-                contentElement.innerHTML = data      
+
+                const parser = new DOMParser()
+                const pg = parser.parseFromString(data, 'text/html')
+                fixLinks(pg.head)
+
+                //Html and css
+                contentElement.innerHTML = pg.body.innerHTML
+                contentElement.append(pg.head)
+                
+                //Script
+                for (const script of pg.scripts){
+                    if (script.src){
+                        fixLinks(script)
+                        import(script.getAttribute('src'))
+                    }
+                }
+
                 document.dispatchEvent(onPageChanged)
             }
         })
 }
 
+//lINK FIX
+const fixLinks = (doc) => {
+    if (doc instanceof HTMLScriptElement) {
+        const scr = doc.getAttribute('src')
+        if (scr.startsWith('/'))
+            doc.setAttribute('src', sitePrefix + scr)
+        return
+    }
+
+    const links = doc.querySelectorAll('link')
+    links.forEach( link => {
+        const href = link.getAttribute('href')
+        if (href.startsWith('/'))
+            link.setAttribute('href', sitePrefix + href)
+    })
+}
+
+//MAIN
+fixLinks(document)
 fetchPage(curPage)
