@@ -27,8 +27,7 @@ h1{
     width: 50%;
 }
 
-.mom .btn{
-    text-decoration: none;
+.mom route-to{
     background-color: #ced4da;
     margin: 10px;
     padding: 10px;
@@ -37,6 +36,26 @@ h1{
     border-radius: 5px;
 }
 
-.mom .btn:hover{
+.mom route-to:hover{
     background-color: lightgray;
+}
+
+.mom .inline-link{
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    color: blue;
+}
+
+.mom .inline-link{
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    color: blue;
+}
+
+
+.mom .inline-link:hover{
+    color: gray;
+    background-color: transparent;
 }

@@ -9,36 +9,37 @@
 <body>
     <nav>
         <ul>
-            <li><a is="route-to" href="/">home</a></li>
-            <li><a is="route-to" href="/about">about</a></li>
+            <li><a is="a-route-to" href="/tag">f</a></li>
+            <li><route-to href="/">home</route-to></li>
+            <li><route-to href="/about">about</route-to></li>
             <li>
-                <a class="non-linked">goods</a>
+                <route-to class="non-linked">goods</route-to>
                 <ul>
-                    <li><a is="route-to" href="/goods/mom">ur mom</a></li>
-                    <li><a is="route-to" href="/goods/school">school supplies</a></li>
+                    <li><route-to href="/goods/mom">ur mom</route-to></li>
+                    <li><route-to href="/goods/school">school supplies</route-to></li>
                 </ul>
             </li>
             <li>
-                <a is="route-to" href="/tag">tag</a>
+                <route-to href="/tag">tag</route-to>
                 <ul>
-                    <li><a is="route-to" href="/tag/game">game</a></li>
-                    <li><a is="route-to" href="/tag/movie">movie</a></li>
-                    <li><a is="route-to" href="/tag/art">art</a></li>
+                    <li><route-to href="/tag/game">game</route-to></li>
+                    <li><route-to href="/tag/movie">movie</route-to></li>
+                    <li><route-to href="/tag/art">art</route-to></li>
                 </ul>
             </li>
             
-            <li><a is="route-to" class="non-exist" href="/non-existent-page">non-existent page</a></li>
+            <li><route-to class="non-exist" href="/non-existent-page">non-existent page</route-to></li>
         </ul>
-        <a href="/git">git</a>
+        <route-to href="/git">git</route-to>
     </nav>
     <content startWith="/home" prefix="/pathtest">
         <h1 class="state">loading</h1>
         <object data="/img/loading.svg" type="image/svg+xml"></object>
     </content>
 
-    <!-- <script type="module" src="/404Routing.js"></script> -->
+    <script type="module" src="/modules/404Routing.js"></script>
     <script type="module">
-        import '/modules/404Routing.js'
+        // import '/modules/404Routing.js'
 
         document.addEventListener('pageFetchingError', e => {
             const el = document.querySelector('.state')

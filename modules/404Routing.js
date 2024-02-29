@@ -24,21 +24,37 @@ window.addEventListener('popstate', e => {
 })
 
 //ROUTING LINKS
+const doRoute = (el) => {
+    el.onclick = e => {
+        e.preventDefault()
+        const page = el.getAttribute('href')
+        
+        if (page === window.location.pathname) return
+        history.pushState(page, null, sitePrefix + page)
+        document.querySelector('content').replaceWith(contentBaseNode.cloneNode(true))
+        fetchPage(page)
+    }   
+}
+
 class RouteElement extends HTMLAnchorElement {
     constructor(){
-        super();
-        this.onclick = e => {
-            e.preventDefault()
-            const page = this.getAttribute('href')
-            
-            if (page === window.location.pathname) return
-            history.pushState(page, null, sitePrefix + page)
-            document.querySelector('content').replaceWith(contentBaseNode.cloneNode(true))
-            fetchPage(page)
-        }   
+        super()
+        doRoute(this)
     }
 }
-customElements.define('route-to', RouteElement, {extends: 'a'})
+
+class RouteElementEx extends HTMLElement {
+    constructor(){
+        super()
+        if (this.hasAttribute('href')) {
+            this.style.cursor = 'pointer'
+            doRoute(this) 
+        }
+    }
+}
+
+customElements.define('a-route-to', RouteElement, {extends: 'a'})
+customElements.define('route-to', RouteElementEx)
 
 //FETCHING
 const fetchPage = (page) => {
@@ -88,11 +104,12 @@ const fixLinks = (doc) => {
         return
     }
 
-    const links = doc.querySelectorAll('link')
+    const links = doc.querySelectorAll('[href]:not(route-to):not([is]), [data], [src]')
     links.forEach( link => {
-        const href = link.getAttribute('href')
-        if (href.startsWith('/'))
-            link.setAttribute('href', sitePrefix + href)
+        const attr = link.getAttributeNode('href') || link.getAttributeNode('data') || link.getAttributeNode('src')
+
+        if (attr.value.startsWith('/'))
+            link.setAttribute(attr.nodeName, sitePrefix + attr.value)
     })
 }
 

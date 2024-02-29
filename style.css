@@ -32,7 +32,7 @@ nav{
     color: #e9ecef;
 }
 
-nav a{
+nav a, nav route-to{
     display: block;
     
     transition: all ease 0.2s;
@@ -66,7 +66,7 @@ nav li li{
     margin-left: 30px;
 }
 
-nav a:hover{
+nav a:hover, nav route-to:hover{
     background-color: antiquewhite;
     color: gray;
 }
