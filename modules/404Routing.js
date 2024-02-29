@@ -102,7 +102,7 @@ const fetchPage = (page) => {
                 //Script
                 for (const script of pg.scripts){
                     if (script.src){
-                        fixLinks(script)
+                        //fixLinks(script)
                         import(script.getAttribute('src'))
                     }
                 }
