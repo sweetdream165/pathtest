@@ -12,6 +12,7 @@
 
 // PROPS
 const sitePrefix = document.querySelector('content').getAttribute('prefix') || ''
+const fileExt = document.querySelector('content').getAttribute('fileExt') || ''
 const curPage = window.location.pathname.replace(sitePrefix, '')
 const contentBaseNode = document.querySelector('content').cloneNode(true)
 
@@ -64,7 +65,7 @@ const fetchPage = (page) => {
     onPageChanged.detail.page = page
     if (page === '/') page = contentElement.getAttribute('startWith')
 
-    fetch(`${window.location.origin}${sitePrefix}/route/${page}${contentElement.getAttribute('fileExt')}`)
+    fetch(`${window.location.origin}${sitePrefix}/route/${page}${fileExt}`)
     .then( response => {return response.text()})
     .then( data => {
             
