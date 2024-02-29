@@ -10,13 +10,26 @@
 // - prefix="/customPath"   [in case site origin starts from path ex: yourSite.com/customPath]
 // - fileExt=".html">   [some servers requires file endings for fetch ex: local server requires '.html']
 
-//FIX ALL LINKS EVEN BEFORE VAR INITS
-fixLinks(document)
-
 // PROPS
 const sitePrefix = document.querySelector('content').getAttribute('prefix') || ''
 const fileExt = document.querySelector('content').getAttribute('fileExt') || ''
 const curPage = window.location.pathname.replace(sitePrefix, '')
+const fixLinks = (doc) => {
+    if (doc instanceof HTMLScriptElement) {
+        const scr = doc.getAttribute('src')
+        if (scr.startsWith('/'))
+            doc.setAttribute('src', sitePrefix + scr)
+        return
+    }
+
+    const links = doc.querySelectorAll('[href]:not(route-to):not([is]), [data], [src]')
+    links.forEach( link => {
+        const attr = link.getAttributeNode('href') || link.getAttributeNode('data') || link.getAttributeNode('src')
+
+        if (attr.value.startsWith('/'))
+            link.setAttribute(attr.nodeName, sitePrefix + attr.value)
+    })
+}(document)
 const contentBaseNode = document.querySelector('content').cloneNode(true)
 
 //EVENTS
@@ -97,24 +110,6 @@ const fetchPage = (page) => {
                 document.dispatchEvent(onPageChanged)
             }
         })
-}
-
-//lINK FIX
-const fixLinks = (doc) => {
-    if (doc instanceof HTMLScriptElement) {
-        const scr = doc.getAttribute('src')
-        if (scr.startsWith('/'))
-            doc.setAttribute('src', sitePrefix + scr)
-        return
-    }
-
-    const links = doc.querySelectorAll('[href]:not(route-to):not([is]), [data], [src]')
-    links.forEach( link => {
-        const attr = link.getAttributeNode('href') || link.getAttributeNode('data') || link.getAttributeNode('src')
-
-        if (attr.value.startsWith('/'))
-            link.setAttribute(attr.nodeName, sitePrefix + attr.value)
-    })
 }
 
 //MAIN
