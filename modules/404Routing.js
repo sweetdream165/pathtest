@@ -77,7 +77,7 @@ const fetchPage = (page) => {
 
                 const parser = new DOMParser()
                 const pg = parser.parseFromString(data, 'text/html')
-                fixLinks(pg.head)
+                fixLinks(pg)
 
                 //Html and css
                 contentElement.innerHTML = pg.body.innerHTML
