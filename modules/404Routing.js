@@ -10,6 +10,9 @@
 // - prefix="/customPath"   [in case site origin starts from path ex: yourSite.com/customPath]
 // - fileExt=".html">   [some servers requires file endings for fetch ex: local server requires '.html']
 
+//FIX ALL LINKS EVEN BEFORE VAR INITS
+fixLinks(document)
+
 // PROPS
 const sitePrefix = document.querySelector('content').getAttribute('prefix') || ''
 const fileExt = document.querySelector('content').getAttribute('fileExt') || ''
@@ -115,6 +118,4 @@ const fixLinks = (doc) => {
 }
 
 //MAIN
-fixLinks(contentBaseNode)
-fixLinks(document)
 fetchPage(curPage)
