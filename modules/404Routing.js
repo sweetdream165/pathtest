@@ -96,8 +96,8 @@ const fetchPage = (page) => {
                 fixLinks(pg)
 
                 //Html and css
-                contentElement.innerHTML = pg.body.innerHTML
-                contentElement.append(pg.head)
+                contentElement.innerHTML = pg.head.innerHTML
+                contentElement.innerHTML += pg.body.innerHTML
                 
                 //Script
                 for (const script of pg.scripts){
