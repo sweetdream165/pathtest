@@ -115,5 +115,6 @@ const fixLinks = (doc) => {
 }
 
 //MAIN
+fixLinks(contentBaseNode)
 fixLinks(document)
 fetchPage(curPage)
