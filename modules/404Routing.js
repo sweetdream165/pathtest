@@ -29,7 +29,7 @@ const fixLinks = (doc) => {
         if (attr.value.startsWith('/'))
             link.setAttribute(attr.nodeName, sitePrefix + attr.value)
     })
-}(document)
+}; fixLinks(document)
 const contentBaseNode = document.querySelector('content').cloneNode(true)
 
 //EVENTS
